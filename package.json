@@ -1,0 +1,28 @@
+{
+  "name": "demo-credit",
+  "version": "1.0.0",
+  "description": "A wallet app for borrowers to receive money from lenders.",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godwintrav/demo-credit.git"
+  },
+  "keywords": [
+    "wallet",
+    "borrowers",
+    "lending",
+    "fintech",
+    "withdraw",
+    "transfer",
+    "fund"
+  ],
+  "author": "Godwin Odenigbo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/godwintrav/demo-credit/issues"
+  },
+  "homepage": "https://github.com/godwintrav/demo-credit#readme"
+}
