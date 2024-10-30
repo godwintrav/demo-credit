@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response } from 'express';
 
 const app = express();
 
@@ -6,8 +6,8 @@ const app = express();
 app.use(express.json());
 
 // Routes
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({ message: "Welcome to the demo credit API!" });
+app.get('/', (req: Request, res: Response) => {
+  res.status(200).json({ message: 'Welcome to the demo credit API!' });
 });
 
 export default app;
