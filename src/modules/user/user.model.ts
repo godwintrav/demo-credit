@@ -29,13 +29,17 @@ export class UserModel {
 
   //get user by email
   async findUserByEmail(email: string): Promise<User | undefined> {
-    const user = await this.db<User>('users').where({ email }).first();
+    const user: User | undefined = await this.db<User>('users')
+      .where({ email })
+      .first();
     return user;
   }
 
   //get user by Id
   async findUserById(id: number): Promise<User | undefined> {
-    const user = await this.db<User>('users').where({ id }).first();
+    const user: User | undefined = await this.db<User>('users')
+      .where({ id })
+      .first();
     return user;
   }
 }

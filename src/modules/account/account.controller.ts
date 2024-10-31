@@ -17,6 +17,7 @@ export class AccountController {
       let { amount, userId } = req.body;
       amount = parseFloat(amount);
       userId = parseInt(userId);
+
       if (!amount || typeof amount != 'number' || amount <= 0) {
         res.status(400).json({ message: INVALID_AMOUNT });
         return;
@@ -27,10 +28,8 @@ export class AccountController {
         return;
       }
 
-      const serviceResponse = await this.accountService.fundUserAccountService(
-        userId,
-        amount,
-      );
+      const serviceResponse: AccountApiResponse =
+        await this.accountService.fundUserAccountService(userId, amount);
       res.status(serviceResponse.statusCode).json({
         message: serviceResponse.message,
         account: serviceResponse.account,
@@ -60,10 +59,8 @@ export class AccountController {
         return;
       }
 
-      const serviceResponse = await this.accountService.withdrawAmountService(
-        userId,
-        amount,
-      );
+      const serviceResponse: AccountApiResponse =
+        await this.accountService.withdrawAmountService(userId, amount);
       res.status(serviceResponse.statusCode).json({
         message: serviceResponse.message,
         account: serviceResponse.account,
@@ -98,11 +95,12 @@ export class AccountController {
         return;
       }
 
-      const serviceResponse = await this.accountService.transferAmountService(
-        senderId,
-        amount,
-        receiverEmail,
-      );
+      const serviceResponse: AccountApiResponse =
+        await this.accountService.transferAmountService(
+          senderId,
+          amount,
+          receiverEmail,
+        );
       res.status(serviceResponse.statusCode).json({
         message: serviceResponse.message,
         account: serviceResponse.account,

@@ -1,5 +1,8 @@
 import { BODY_REQUIRED, LOGIN_ERROR } from '../../constants';
-import { CreateUserApiResponse } from '../../interfaces/api-response.interface';
+import {
+  CreateUserApiResponse,
+  LoginUserApiResponse,
+} from '../../interfaces/api-response.interface';
 import { UserService } from './user.service';
 import { Request, Response } from 'express';
 import { validateRegistration } from './user.validation';
@@ -30,7 +33,8 @@ export class UserController {
       }
 
       //call create user from user service
-      const apiResponse = await this.userService.createUser(body);
+      const apiResponse: CreateUserApiResponse =
+        await this.userService.createUser(body);
 
       if (apiResponse.statusCode !== 201) {
         res
@@ -60,7 +64,8 @@ export class UserController {
       }
 
       //call create user from user service
-      const apiResponse = await this.userService.loginUser(email, password);
+      const apiResponse: LoginUserApiResponse =
+        await this.userService.loginUser(email, password);
 
       if (apiResponse.statusCode !== 200) {
         res

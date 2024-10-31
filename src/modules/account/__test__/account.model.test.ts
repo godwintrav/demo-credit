@@ -62,7 +62,7 @@ describe('AccountModel', () => {
       where().first.mockResolvedValueOnce(mockAccount);
 
       const account: Account | undefined =
-        await accountModel.findAccountById(id);
+        await accountModel.findAccountByUserId(id);
 
       expect(mockKnex).toHaveBeenCalledWith('accounts');
       expect(where).toHaveBeenCalledWith({ user_id: id });
@@ -74,7 +74,7 @@ describe('AccountModel', () => {
       where().first.mockResolvedValueOnce(undefined);
 
       const account: Account | undefined =
-        await accountModel.findAccountById(id);
+        await accountModel.findAccountByUserId(id);
 
       expect(where).toHaveBeenCalledWith({ user_id: id });
       expect(where).toHaveBeenCalled();
@@ -132,7 +132,8 @@ describe('AccountModel', () => {
 
       select().innerJoin().where().first.mockResolvedValueOnce(mockAccount);
 
-      const account = await accountModel.findAccountByEmail(email);
+      const account: Account | undefined =
+        await accountModel.findAccountByEmail(email);
 
       expect(mockKnex).toHaveBeenCalledWith('accounts');
       expect(where).toHaveBeenCalledWith('users.email', email);
@@ -145,7 +146,8 @@ describe('AccountModel', () => {
       const email = 'john.doe@email.com';
       select().innerJoin().where().first.mockResolvedValueOnce(undefined);
 
-      const account = await accountModel.findAccountByEmail(email);
+      const account: Account | undefined =
+        await accountModel.findAccountByEmail(email);
 
       expect(where).toHaveBeenCalledWith('users.email', email);
       expect(where).toHaveBeenCalled();
@@ -156,7 +158,7 @@ describe('AccountModel', () => {
   });
 
   describe('findUserAndAccountById', () => {
-    it('should user info and account info by id', async () => {
+    it('should get user info and account info by id', async () => {
       const id = 1;
 
       select()
@@ -164,7 +166,8 @@ describe('AccountModel', () => {
         .where()
         .first.mockResolvedValueOnce(mockUserAndAccount);
 
-      const account = await accountModel.findUserAndAccountById(id);
+      const account: UserAccount | undefined =
+        await accountModel.findUserAndAccountById(id);
 
       expect(mockKnex).toHaveBeenCalledWith('accounts');
       expect(where).toHaveBeenCalledWith('users.id', id);
@@ -194,7 +197,6 @@ describe('AccountModel', () => {
       user_id: 1,
       transaction_type: 'fund',
       amount: 50.0,
-      reference: 'TXN123',
       created_at: new Date(),
       updated_at: new Date(),
     };

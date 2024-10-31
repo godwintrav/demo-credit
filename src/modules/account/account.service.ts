@@ -21,7 +21,7 @@ export class AccountService {
   ): Promise<AccountApiResponse> {
     //find account
     const account: Account | undefined =
-      await this.accountModel.findAccountById(userId);
+      await this.accountModel.findAccountByUserId(userId);
     if (!account) {
       return { message: ACCOUNT_NOT_FOUND, statusCode: 404 };
     }
@@ -49,7 +49,7 @@ export class AccountService {
   ): Promise<AccountApiResponse> {
     //find account
     const account: Account | undefined =
-      await this.accountModel.findAccountById(userId);
+      await this.accountModel.findAccountByUserId(userId);
     if (!account) {
       return { message: ACCOUNT_NOT_FOUND, statusCode: 404 };
     }
@@ -84,7 +84,7 @@ export class AccountService {
   ): Promise<AccountApiResponse> {
     //find user account
     const senderAccount: Account | undefined =
-      await this.accountModel.findAccountById(senderId);
+      await this.accountModel.findAccountByUserId(senderId);
     if (!senderAccount) {
       return { message: ACCOUNT_NOT_FOUND, statusCode: 404 };
     }

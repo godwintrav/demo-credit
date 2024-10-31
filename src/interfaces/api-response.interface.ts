@@ -1,4 +1,5 @@
 import { Account } from './account.interface';
+import { Transaction } from './transaction.interface';
 import { User } from './user.interface';
 
 export interface ApiResponse {
@@ -18,4 +19,8 @@ export interface LoginUserApiResponse extends ApiResponse {
 export interface AccountApiResponse extends ApiResponse {
   account?: Partial<Account>;
   user?: Partial<User>;
+}
+
+export interface TransactionsApiResponse extends ApiResponse {
+  transactions: Transaction[];
 }

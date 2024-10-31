@@ -48,7 +48,7 @@ describe('UserModel', () => {
 
     it('should insert a new user and return the user id', async () => {
       transaction.mockResolvedValueOnce(1);
-      const newUserId = await userModel.insert(mockUser);
+      const newUserId: number = await userModel.insert(mockUser);
 
       expect(newUserId).toBe(1);
     });
@@ -66,7 +66,9 @@ describe('UserModel', () => {
     it('should return a user by email', async () => {
       first.mockResolvedValueOnce(mockUser);
 
-      const user = await userModel.findUserByEmail(mockUser.email);
+      const user: User | undefined = await userModel.findUserByEmail(
+        mockUser.email,
+      );
 
       expect(where).toHaveBeenCalledWith({ email: mockUser.email });
       expect(first).toHaveBeenCalled();
@@ -76,7 +78,9 @@ describe('UserModel', () => {
     it('should return undefined if no user found by email', async () => {
       first.mockResolvedValueOnce(undefined);
 
-      const user = await userModel.findUserByEmail('nonexistent@example.com');
+      const user: User | undefined = await userModel.findUserByEmail(
+        'nonexistent@example.com',
+      );
 
       expect(where).toHaveBeenCalledWith({ email: 'nonexistent@example.com' });
       expect(first).toHaveBeenCalled();
@@ -97,7 +101,7 @@ describe('UserModel', () => {
     it('should return a user by id', async () => {
       first.mockResolvedValueOnce(mockUser);
 
-      const user = await userModel.findUserById(1);
+      const user: User | undefined = await userModel.findUserById(1);
 
       expect(where).toHaveBeenCalledWith({ id: 1 });
       expect(first).toHaveBeenCalled();
@@ -107,7 +111,7 @@ describe('UserModel', () => {
     it('should return undefined if no user found by id', async () => {
       first.mockResolvedValueOnce(undefined);
 
-      const user = await userModel.findUserById(999);
+      const user: User | undefined = await userModel.findUserById(999);
 
       expect(where).toHaveBeenCalledWith({ id: 999 });
       expect(first).toHaveBeenCalled();

@@ -17,6 +17,7 @@ export const INVALID_USER = 'Invalid user id';
 export const INVALID_AMOUNT = 'Invalid Amount';
 export const INSUFFICIENT_FUNDS = 'Insufficient Funds';
 export const RECEIVER_ACCOUNT_NOT_FOUND = 'Receiver account not found';
+export const BLACKLISTED_ERROR_MSG = 'User has been blacklisted';
 
 //success messages
 export const SUCCESS_MSG = 'success';

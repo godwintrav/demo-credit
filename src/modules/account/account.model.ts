@@ -8,15 +8,15 @@ export class AccountModel {
   constructor(private readonly db: Knex) {}
 
   //get Account by Id
-  async findAccountById(user_id: number): Promise<Account | undefined> {
-    const account = await this.db<Account>('accounts')
+  async findAccountByUserId(user_id: number): Promise<Account | undefined> {
+    const account: Account | undefined = await this.db<Account>('accounts')
       .where({ user_id })
       .first();
     return account;
   }
 
   async findAccountByEmail(email: string): Promise<Account | undefined> {
-    const account = await this.db<Account>('accounts')
+    const account: Account | undefined = await this.db<Account>('accounts')
       .select('accounts.*')
       .innerJoin('users', 'users.id', 'accounts.user_id')
       .where('users.email', email)
@@ -27,7 +27,7 @@ export class AccountModel {
   async findUserAndAccountById(
     userId: number,
   ): Promise<UserAccount | undefined> {
-    const account = await this.db<Account>('accounts')
+    const account: UserAccount | undefined = await this.db<Account>('accounts')
       .select(
         'accounts.*',
         'users.email',
@@ -48,7 +48,7 @@ export class AccountModel {
     account_id: number,
     accountUpdates: Partial<Omit<Account, 'id'>>,
   ): Promise<number> {
-    const updatedCount = await this.db<Account>('accounts')
+    const updatedCount: number = await this.db<Account>('accounts')
       .where({ id: account_id })
       .update({ balance: accountUpdates.balance });
 

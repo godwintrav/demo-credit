@@ -10,6 +10,7 @@ import { Account } from '../../../interfaces/account.interface';
 import { UserAccount } from '../../../interfaces/user-account.interface';
 import mockKnex from '../../../__mocks__/knex';
 import type { Knex } from 'knex';
+import { AccountApiResponse } from '../../../interfaces/api-response.interface';
 
 jest.mock('../account.model');
 
@@ -26,20 +27,22 @@ describe('AccountService', () => {
 
   describe('fundUserAccountService', () => {
     it('should return an error if account does not exist', async () => {
-      mockAccountModel.findAccountById.mockResolvedValueOnce(undefined);
+      mockAccountModel.findAccountByUserId.mockResolvedValueOnce(undefined);
 
-      const response = await accountService.fundUserAccountService(1, 100);
+      const response: AccountApiResponse =
+        await accountService.fundUserAccountService(1, 100);
 
       expect(response).toEqual({ message: ACCOUNT_NOT_FOUND, statusCode: 404 });
-      expect(mockAccountModel.findAccountById).toHaveBeenCalledWith(1);
+      expect(mockAccountModel.findAccountByUserId).toHaveBeenCalledWith(1);
     });
 
     it('should add funds to account and return success message', async () => {
       const account: Account = { id: 1, user_id: 1, balance: 200 };
-      mockAccountModel.findAccountById.mockResolvedValueOnce(account);
+      mockAccountModel.findAccountByUserId.mockResolvedValueOnce(account);
       mockAccountModel.updateAccount.mockResolvedValueOnce(1);
 
-      const response = await accountService.fundUserAccountService(1, 100);
+      const response: AccountApiResponse =
+        await accountService.fundUserAccountService(1, 100);
 
       expect(response.message).toBe(SUCCESS_MSG);
       expect(response.account?.balance).toBe(300);
@@ -55,18 +58,20 @@ describe('AccountService', () => {
 
   describe('withdrawAmountService', () => {
     it('should return an error if account does not exist', async () => {
-      mockAccountModel.findAccountById.mockResolvedValueOnce(undefined);
+      mockAccountModel.findAccountByUserId.mockResolvedValueOnce(undefined);
 
-      const response = await accountService.withdrawAmountService(1, 100);
+      const response: AccountApiResponse =
+        await accountService.withdrawAmountService(1, 100);
 
       expect(response).toEqual({ message: ACCOUNT_NOT_FOUND, statusCode: 404 });
     });
 
     it('should return an error if insufficient funds', async () => {
       const account: Account = { id: 1, user_id: 1, balance: 50 };
-      mockAccountModel.findAccountById.mockResolvedValueOnce(account);
+      mockAccountModel.findAccountByUserId.mockResolvedValueOnce(account);
 
-      const response = await accountService.withdrawAmountService(1, 100);
+      const response: AccountApiResponse =
+        await accountService.withdrawAmountService(1, 100);
 
       expect(response).toEqual({
         message: INSUFFICIENT_FUNDS,
@@ -76,10 +81,11 @@ describe('AccountService', () => {
 
     it('should withdraw funds from account and return success message', async () => {
       const account: Account = { id: 1, user_id: 1, balance: 200 };
-      mockAccountModel.findAccountById.mockResolvedValueOnce(account);
+      mockAccountModel.findAccountByUserId.mockResolvedValueOnce(account);
       mockAccountModel.updateAccount.mockResolvedValueOnce(1);
 
-      const response = await accountService.withdrawAmountService(1, 100);
+      const response: AccountApiResponse =
+        await accountService.withdrawAmountService(1, 100);
 
       expect(response.message).toBe(SUCCESS_MSG);
       expect(response.account?.balance).toBe(100);
@@ -95,26 +101,28 @@ describe('AccountService', () => {
 
   describe('transferAmountService', () => {
     it('should return an error if sender account does not exist', async () => {
-      mockAccountModel.findAccountById.mockResolvedValueOnce(undefined);
+      mockAccountModel.findAccountByUserId.mockResolvedValueOnce(undefined);
 
-      const response = await accountService.transferAmountService(
-        1,
-        100,
-        'receiver@example.com',
-      );
+      const response: AccountApiResponse =
+        await accountService.transferAmountService(
+          1,
+          100,
+          'receiver@example.com',
+        );
 
       expect(response).toEqual({ message: ACCOUNT_NOT_FOUND, statusCode: 404 });
     });
 
     it('should return an error if sender has insufficient funds', async () => {
       const senderAccount: Account = { id: 1, user_id: 1, balance: 50 };
-      mockAccountModel.findAccountById.mockResolvedValueOnce(senderAccount);
+      mockAccountModel.findAccountByUserId.mockResolvedValueOnce(senderAccount);
 
-      const response = await accountService.transferAmountService(
-        1,
-        100,
-        'receiver@example.com',
-      );
+      const response: AccountApiResponse =
+        await accountService.transferAmountService(
+          1,
+          100,
+          'receiver@example.com',
+        );
 
       expect(response).toEqual({
         message: INSUFFICIENT_FUNDS,
@@ -124,14 +132,15 @@ describe('AccountService', () => {
 
     it('should return an error if receiver account does not exist', async () => {
       const senderAccount: Account = { id: 1, user_id: 1, balance: 200 };
-      mockAccountModel.findAccountById.mockResolvedValueOnce(senderAccount);
+      mockAccountModel.findAccountByUserId.mockResolvedValueOnce(senderAccount);
       mockAccountModel.findAccountByEmail.mockResolvedValueOnce(undefined);
 
-      const response = await accountService.transferAmountService(
-        1,
-        100,
-        'receiver@example.com',
-      );
+      const response: AccountApiResponse =
+        await accountService.transferAmountService(
+          1,
+          100,
+          'receiver@example.com',
+        );
 
       expect(response).toEqual({
         message: RECEIVER_ACCOUNT_NOT_FOUND,
@@ -142,17 +151,18 @@ describe('AccountService', () => {
     it('should transfer funds between accounts and return success message', async () => {
       const senderAccount: Account = { id: 1, user_id: 1, balance: 200 };
       const receiverAccount: Account = { id: 2, user_id: 2, balance: 100 };
-      mockAccountModel.findAccountById.mockResolvedValueOnce(senderAccount);
+      mockAccountModel.findAccountByUserId.mockResolvedValueOnce(senderAccount);
       mockAccountModel.findAccountByEmail.mockResolvedValueOnce(
         receiverAccount,
       );
       mockAccountModel.updateTransfer.mockResolvedValueOnce(1);
 
-      const response = await accountService.transferAmountService(
-        1,
-        100,
-        'receiver@example.com',
-      );
+      const response: AccountApiResponse =
+        await accountService.transferAmountService(
+          1,
+          100,
+          'receiver@example.com',
+        );
 
       expect(response.message).toBe(SUCCESS_MSG);
       expect(response.account?.balance).toBe(100);
@@ -176,7 +186,8 @@ describe('AccountService', () => {
     it('should return an error if user account does not exist', async () => {
       mockAccountModel.findUserAndAccountById.mockResolvedValueOnce(undefined);
 
-      const response = await accountService.getUserAccount(1);
+      const response: AccountApiResponse =
+        await accountService.getUserAccount(1);
 
       expect(response).toEqual({ message: ACCOUNT_NOT_FOUND, statusCode: 404 });
     });
@@ -197,7 +208,8 @@ describe('AccountService', () => {
         userAccount,
       );
 
-      const response = await accountService.getUserAccount(1);
+      const response: AccountApiResponse =
+        await accountService.getUserAccount(1);
 
       expect(response.message).toBe(SUCCESS_MSG);
       expect(response.statusCode).toBe(200);

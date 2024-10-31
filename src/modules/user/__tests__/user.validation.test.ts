@@ -10,6 +10,7 @@ import {
   INVALID_PASSWORD,
   LGA_REQUIRED,
 } from '../../../constants';
+import { CreateUserApiResponse } from '../../../interfaces/api-response.interface';
 
 describe('validateRegistration', () => {
   beforeEach(() => {
@@ -41,7 +42,7 @@ describe('validateRegistration', () => {
       password: 'securepassword',
     };
 
-    const result = validateRegistration(input);
+    const result: CreateUserApiResponse | null = validateRegistration(input);
     expect(result).toEqual(errorResponse(ADDRESS_REQUIRED));
   });
 
@@ -55,7 +56,7 @@ describe('validateRegistration', () => {
       password: 'securepassword',
     };
 
-    const result = validateRegistration(input);
+    const result: CreateUserApiResponse | null = validateRegistration(input);
     expect(result).toEqual(errorResponse(INVALID_NAME));
   });
 
@@ -72,7 +73,7 @@ describe('validateRegistration', () => {
       password: 'securepassword',
     };
 
-    const result = validateRegistration(input);
+    const result: CreateUserApiResponse | null = validateRegistration(input);
     expect(result).toEqual(errorResponse(INVALID_EMAIL_ADDRESS));
     jest.restoreAllMocks();
   });
@@ -87,7 +88,7 @@ describe('validateRegistration', () => {
       password: 'securepassword',
     };
 
-    const result = validateRegistration(input);
+    const result: CreateUserApiResponse | null = validateRegistration(input);
     expect(result).toEqual(errorResponse(CITY_REQUIRED));
   });
 
@@ -104,7 +105,7 @@ describe('validateRegistration', () => {
       password: 'securepassword',
     };
 
-    const result = validateRegistration(input);
+    const result: CreateUserApiResponse | null = validateRegistration(input);
     expect(result).toEqual(errorResponse(INVALID_DOB));
     jest.restoreAllMocks();
   });
@@ -119,7 +120,7 @@ describe('validateRegistration', () => {
       password: 'securepassword',
     };
 
-    const result = validateRegistration(input);
+    const result: CreateUserApiResponse | null = validateRegistration(input);
     expect(result).toEqual(errorResponse(LGA_REQUIRED));
   });
 
@@ -134,7 +135,7 @@ describe('validateRegistration', () => {
       password: 'securepassword',
     };
 
-    const result = validateRegistration(input);
+    const result: CreateUserApiResponse | null = validateRegistration(input);
     expect(result).toEqual(errorResponse(LGA_REQUIRED));
   });
 
@@ -148,7 +149,7 @@ describe('validateRegistration', () => {
       lga_id: '123',
     };
 
-    const result = validateRegistration(input);
+    const result: CreateUserApiResponse | null = validateRegistration(input);
     expect(result).toEqual(errorResponse(INVALID_PASSWORD));
   });
 
@@ -163,7 +164,7 @@ describe('validateRegistration', () => {
       password: '123',
     };
 
-    const result = validateRegistration(input);
+    const result: CreateUserApiResponse | null = validateRegistration(input);
     expect(result).toEqual(errorResponse(INVALID_PASSWORD));
   });
 });

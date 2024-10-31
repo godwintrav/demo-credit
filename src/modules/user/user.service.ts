@@ -8,8 +8,14 @@ import {
 } from '../../interfaces/api-response.interface';
 import validator from 'validator';
 import { errorResponse } from '../../utils/errorResponse';
-import { LOGIN_ERROR, SUCCESS_MSG, USER_EXISTS } from '../../constants';
+import {
+  BLACKLISTED_ERROR_MSG,
+  LOGIN_ERROR,
+  SUCCESS_MSG,
+  USER_EXISTS,
+} from '../../constants';
 import jwt from 'jsonwebtoken';
+import axios from 'axios';
 
 //This class handles business logic for users
 export class UserService {
@@ -17,6 +23,11 @@ export class UserService {
 
   //create a new user
   async createUser(body: any): Promise<CreateUserApiResponse> {
+    const isBlacklisted = await this.checkKarmaBlacklist(body.email);
+    if (isBlacklisted === true) {
+      return errorResponse(BLACKLISTED_ERROR_MSG);
+    }
+
     const hashedPassword = await this.hashPassword(body.password);
 
     //create new user object without id
@@ -30,14 +41,18 @@ export class UserService {
       password: hashedPassword,
     };
 
-    const existingUser = await this.userModel.findUserByEmail(user.email);
+    const existingUser: User | undefined = await this.userModel.findUserByEmail(
+      user.email,
+    );
 
     if (existingUser != null) {
       return errorResponse(USER_EXISTS);
     }
 
     await this.userModel.insert(user);
-    const newUser = await this.userModel.findUserByEmail(user.email);
+    const newUser: User | undefined = await this.userModel.findUserByEmail(
+      user.email,
+    );
     delete newUser!.password;
     return { statusCode: 201, user: newUser, message: 'success' };
   }
@@ -46,7 +61,7 @@ export class UserService {
     email: string,
     password: string,
   ): Promise<LoginUserApiResponse> {
-    const existingUser = await this.userModel.findUserByEmail(
+    const existingUser: User | undefined = await this.userModel.findUserByEmail(
       validator.escape(email.trim()),
     );
 
@@ -62,7 +77,7 @@ export class UserService {
       return errorResponse(LOGIN_ERROR, 401);
     }
 
-    const token = await this.generateJWTToken(
+    const token: string = await this.generateJWTToken(
       existingUser.email,
       existingUser.id,
     );
@@ -79,8 +94,8 @@ export class UserService {
   // Function to hash a password
   async hashPassword(password: string): Promise<string> {
     const SALT_ROUNDS = 10;
-    const salt = await bcrypt.genSalt(SALT_ROUNDS);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const salt: string = await bcrypt.genSalt(SALT_ROUNDS);
+    const hashedPassword: string = await bcrypt.hash(password, salt);
     return hashedPassword;
   }
 
@@ -89,7 +104,7 @@ export class UserService {
     password: string,
     hashedPassword: string,
   ): Promise<boolean> {
-    const isMatch = await bcrypt.compare(password, hashedPassword);
+    const isMatch: boolean = await bcrypt.compare(password, hashedPassword);
     return isMatch;
   }
 
@@ -99,5 +114,26 @@ export class UserService {
       process.env.JWT_SECRET as string,
       { expiresIn: '1h' }, // Token expiry time
     );
+  }
+
+  //function to check karma api if user is in blacklist
+  async checkKarmaBlacklist(email: string): Promise<boolean> {
+    try {
+      const URL = `https://adjutor.lendsqr.com/v2/verification/karma/${email}`;
+      const response = await axios.get(URL, {
+        headers: {
+          Authorization: `Bearer ${process.env.KARMA_API_KEY}`,
+        },
+      });
+      if (response.status == 404) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (error: unknown) {
+      //throw error with more descriptive error message
+      console.log(error);
+      throw new Error(`Error fetching Karma Blacklist data`);
+    }
   }
 }
