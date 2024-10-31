@@ -41,18 +41,24 @@
     "npm": ">=10.8.2"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
-    "mysql2": "^3.11.3"
+    "mysql2": "^3.11.3",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/knex": "^0.15.2",
     "@types/node": "^22.8.4",
     "@types/supertest": "^6.0.2",
+    "@types/validator": "^13.12.2",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.11.0",

@@ -1,7 +1,7 @@
 import type { Knex } from 'knex';
 import dotenv from 'dotenv';
 import fs from 'fs';
-dotenv.config();
+dotenv.config({ path: '.env' });
 
 const DB_CLIENT = 'mysql2';
 const MIGRATION_PATH = '../migrations';
