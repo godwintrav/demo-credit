@@ -18,7 +18,9 @@ const config: { [key: string]: Knex.Config } = {
       ssl: {
         rejectUnauthorized: true,
         ca: fs
-          .readFileSync(process.env.PATH_TO_SSL_CERTIFICATE as string)
+          .readFileSync(
+            (process.env.PATH_TO_SSL_CERTIFICATE as string) || 'ca.pem',
+          )
           .toString(),
       },
     },
@@ -37,7 +39,9 @@ const config: { [key: string]: Knex.Config } = {
       ssl: {
         rejectUnauthorized: true,
         ca: fs
-          .readFileSync(process.env.PATH_TO_SSL_CERTIFICATE as string)
+          .readFileSync(
+            (process.env.PATH_TO_SSL_CERTIFICATE as string) || 'ca.pem',
+          )
           .toString(),
       },
     },

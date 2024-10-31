@@ -31,16 +31,14 @@ export class AccountController {
         userId,
         amount,
       );
-      res
-        .status(serviceResponse.statusCode)
-        .json({
-          message: serviceResponse.message,
-          account: serviceResponse.account,
-        });
+      res.status(serviceResponse.statusCode).json({
+        message: serviceResponse.message,
+        account: serviceResponse.account,
+      });
       return;
     } catch (e: unknown) {
       const err: Error = e as Error;
-      console.error(err);
+      //console.error(err);
       res.status(500).json({ message: err.message });
       return;
     }
@@ -66,16 +64,14 @@ export class AccountController {
         userId,
         amount,
       );
-      res
-        .status(serviceResponse.statusCode)
-        .json({
-          message: serviceResponse.message,
-          account: serviceResponse.account,
-        });
+      res.status(serviceResponse.statusCode).json({
+        message: serviceResponse.message,
+        account: serviceResponse.account,
+      });
       return;
     } catch (e: unknown) {
       const err: Error = e as Error;
-      console.error(err);
+      //console.error(err);
       res.status(500).json({ message: err.message });
       return;
     }
@@ -107,16 +103,14 @@ export class AccountController {
         amount,
         receiverEmail,
       );
-      res
-        .status(serviceResponse.statusCode)
-        .json({
-          message: serviceResponse.message,
-          account: serviceResponse.account,
-        });
+      res.status(serviceResponse.statusCode).json({
+        message: serviceResponse.message,
+        account: serviceResponse.account,
+      });
       return;
     } catch (e: unknown) {
       const err: Error = e as Error;
-      console.error(err);
+      //console.error(err);
       res.status(500).json({ message: err.message });
       return;
     }
@@ -133,17 +127,15 @@ export class AccountController {
 
       const serviceResponse: AccountApiResponse =
         await this.accountService.getUserAccount(userId);
-      res
-        .status(serviceResponse.statusCode)
-        .json({
-          message: serviceResponse.message,
-          account: serviceResponse.account,
-          user: serviceResponse.user,
-        });
+      res.status(serviceResponse.statusCode).json({
+        message: serviceResponse.message,
+        account: serviceResponse.account,
+        user: serviceResponse.user,
+      });
       return;
     } catch (e: unknown) {
       const err: Error = e as Error;
-      console.error(err);
+      //console.error(err);
       res.status(500).json({ message: err.message });
       return;
     }

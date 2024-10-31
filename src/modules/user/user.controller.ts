@@ -45,7 +45,7 @@ export class UserController {
       return;
     } catch (e: unknown) {
       const err: Error = e as Error;
-      console.error(err);
+      //console.error(err);
       res.status(500).json({ message: err.message });
       return;
     }
@@ -77,7 +77,7 @@ export class UserController {
       return;
     } catch (e: unknown) {
       const err: Error = e as Error;
-      console.error(err);
+      //console.error(err);
       res.status(500).json({ message: err.message });
       return;
     }

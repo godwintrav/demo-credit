@@ -22,7 +22,7 @@ export class UserModel {
       // If we get here, that means that neither the 'user' insert,
       // nor 'account' inserts will have taken place beacuse we used transaction.
       const err: Error = e as Error;
-      console.error(err);
+      //console.error(err);
       throw new Error('Transaction failed: ' + err.message);
     }
   }
