@@ -2,7 +2,7 @@ import { AccountController } from '../account.controller';
 import { AccountService } from '../account.service';
 import { Request, Response } from 'express';
 import { jest } from '@jest/globals';
-import { INVALID_AMOUNT, INVALID_USER } from '../../../constants';
+import { INVALID_AMOUNT, INVALID_USER } from '../../../utils/constants';
 import { AccountApiResponse } from '../../../interfaces/api-response.interface';
 
 describe('AccountController', () => {

@@ -5,7 +5,7 @@ import {
   INSUFFICIENT_FUNDS,
   RECEIVER_ACCOUNT_NOT_FOUND,
   SUCCESS_MSG,
-} from '../../../constants';
+} from '../../../utils/constants';
 import { Account } from '../../../interfaces/account.interface';
 import { UserAccount } from '../../../interfaces/user-account.interface';
 import mockKnex from '../../../__mocks__/knex';

@@ -3,7 +3,7 @@ import {
   INVALID_AMOUNT,
   INVALID_USER,
   RECEIVER_ACCOUNT_NOT_FOUND,
-} from '../../constants';
+} from '../../utils/constants';
 import { AccountService } from './account.service';
 import { Request, Response } from 'express';
 import { AccountApiResponse } from '../../interfaces/api-response.interface';

@@ -13,7 +13,7 @@ import {
   LOGIN_ERROR,
   SUCCESS_MSG,
   USER_EXISTS,
-} from '../../constants';
+} from '../../utils/constants';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
 

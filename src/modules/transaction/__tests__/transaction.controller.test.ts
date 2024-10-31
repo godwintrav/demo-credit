@@ -1,7 +1,7 @@
 import { TransactionController } from '../transaction.controller';
 import { TransactionService } from '../transaction.service';
 import { Request, Response } from 'express';
-import { INVALID_USER } from '../../../constants';
+import { INVALID_USER } from '../../../utils/constants';
 import { TransactionsApiResponse } from '../../../interfaces/api-response.interface';
 
 describe('TransactionController', () => {

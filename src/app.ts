@@ -3,7 +3,7 @@ import userRouter from './modules/user/user.route';
 import accountRouter from './modules/account/account.route';
 import transactionRouter from './modules/transaction/transaction.route';
 import authMiddleware from './middleware/auth.middleware';
-import { URL_NOT_FOUND } from './constants';
+import { URL_NOT_FOUND } from './utils/constants';
 
 const app = express();
 

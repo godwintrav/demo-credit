@@ -1,6 +1,6 @@
 import { TransactionService } from '../transaction.service';
 import { TransactionModel } from '../transaction.model';
-import { SUCCESS_MSG } from '../../../constants';
+import { SUCCESS_MSG } from '../../../utils/constants';
 import { Transaction } from '../../../interfaces/transaction.interface';
 import { TransactionsApiResponse } from '../../../interfaces/api-response.interface';
 import mockKnex from '../../../__mocks__/knex';

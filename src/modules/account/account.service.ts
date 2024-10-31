@@ -3,7 +3,7 @@ import {
   INSUFFICIENT_FUNDS,
   RECEIVER_ACCOUNT_NOT_FOUND,
   SUCCESS_MSG,
-} from '../../constants';
+} from '../../utils/constants';
 import { Account } from '../../interfaces/account.interface';
 import { AccountApiResponse } from '../../interfaces/api-response.interface';
 import { Transaction } from '../../interfaces/transaction.interface';

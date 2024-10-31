@@ -9,7 +9,7 @@ import {
   LOGIN_ERROR,
   SUCCESS_MSG,
   USER_EXISTS,
-} from '../../../constants';
+} from '../../../utils/constants';
 import { User } from '../../../interfaces/user.interface';
 
 describe('UserController', () => {

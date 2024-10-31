@@ -1,4 +1,4 @@
-import { SUCCESS_MSG } from '../../constants';
+import { SUCCESS_MSG } from '../../utils/constants';
 import { TransactionsApiResponse } from '../../interfaces/api-response.interface';
 import { Transaction } from '../../interfaces/transaction.interface';
 import { TransactionModel } from './transaction.model';

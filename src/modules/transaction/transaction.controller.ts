@@ -1,4 +1,4 @@
-import { INVALID_USER } from '../../constants';
+import { INVALID_USER } from '../../utils/constants';
 import { TransactionsApiResponse } from '../../interfaces/api-response.interface';
 import { TransactionService } from './transaction.service';
 import { Request, Response } from 'express';
@@ -20,12 +20,10 @@ export class TransactionController {
       const response: TransactionsApiResponse =
         await this.transactionService.getAllUserTransactions(validatedUserId);
 
-      res
-        .status(response.statusCode)
-        .json({
-          transactions: response.transactions,
-          message: response.message,
-        });
+      res.status(response.statusCode).json({
+        transactions: response.transactions,
+        message: response.message,
+      });
       return;
     } catch (e: unknown) {
       const err: Error = e as Error;

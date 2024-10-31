@@ -1,4 +1,4 @@
-import { BODY_REQUIRED, LOGIN_ERROR } from '../../constants';
+import { BODY_REQUIRED, LOGIN_ERROR } from '../../utils/constants';
 import {
   CreateUserApiResponse,
   LoginUserApiResponse,

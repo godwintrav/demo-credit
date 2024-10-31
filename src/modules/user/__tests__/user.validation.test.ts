@@ -9,7 +9,7 @@ import {
   INVALID_NAME,
   INVALID_PASSWORD,
   LGA_REQUIRED,
-} from '../../../constants';
+} from '../../../utils/constants';
 import { CreateUserApiResponse } from '../../../interfaces/api-response.interface';
 
 describe('validateRegistration', () => {

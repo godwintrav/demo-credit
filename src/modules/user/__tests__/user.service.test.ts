@@ -8,7 +8,7 @@ import {
   LOGIN_ERROR,
   SUCCESS_MSG,
   USER_EXISTS,
-} from '../../../constants';
+} from '../../../utils/constants';
 import { User } from '../../../interfaces/user.interface';
 import mockKnex from '../../../__mocks__/knex';
 import type { Knex } from 'knex';
@@ -47,11 +47,9 @@ describe('UserService', () => {
 
   describe('createUser', () => {
     beforeEach(() => {
-      axiosSpy = jest
-        .spyOn(axios, 'get')
-        .mockResolvedValue({
-          status: 404,
-        } as unknown as Axios.AxiosXHR<unknown>);
+      axiosSpy = jest.spyOn(axios, 'get').mockResolvedValue({
+        status: 404,
+      } as unknown as Axios.AxiosXHR<unknown>);
     });
     it('should return an error if user has been blacklisted', async () => {
       axiosSpy.mockResolvedValueOnce({
