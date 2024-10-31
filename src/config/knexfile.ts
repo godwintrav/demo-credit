@@ -1,6 +1,5 @@
 import type { Knex } from 'knex';
 import dotenv from 'dotenv';
-import fs from 'fs';
 dotenv.config({ path: '.env' });
 
 const DB_CLIENT = 'mysql2';
@@ -16,12 +15,7 @@ const config: { [key: string]: Knex.Config } = {
       database: process.env.DB_NAME,
       port: Number(process.env.DB_PORT),
       ssl: {
-        rejectUnauthorized: true,
-        ca: fs
-          .readFileSync(
-            (process.env.PATH_TO_SSL_CERTIFICATE as string) || 'ca.pem',
-          )
-          .toString(),
+        rejectUnauthorized: false,
       },
     },
     migrations: {
@@ -37,12 +31,7 @@ const config: { [key: string]: Knex.Config } = {
       database: process.env.PROD_DB_NAME,
       port: Number(process.env.PROD_DB_PORT),
       ssl: {
-        rejectUnauthorized: true,
-        ca: fs
-          .readFileSync(
-            (process.env.PATH_TO_SSL_CERTIFICATE as string) || 'ca.pem',
-          )
-          .toString(),
+        rejectUnauthorized: false,
       },
     },
     migrations: {
