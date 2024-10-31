@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { errorResponse } from '../../../utils/errorResponse';
 import { LOGIN_ERROR, SUCCESS_MSG, USER_EXISTS } from '../../../constants';
-import { User } from '../user.interface';
+import { User } from '../../../interfaces/user.interface';
 import mockKnex from '../../../__mocks__/knex';
 import type { Knex } from 'knex';
 

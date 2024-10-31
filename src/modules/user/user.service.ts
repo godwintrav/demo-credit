@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { User } from './user.interface';
+import { User } from '../../interfaces/user.interface';
 import bcrypt from 'bcrypt';
 import { UserModel } from './user.model';
 import {
   CreateUserApiResponse,
   LoginUserApiResponse,
-} from '../../types/api-response';
+} from '../../interfaces/api-response.interface';
 import validator from 'validator';
 import { errorResponse } from '../../utils/errorResponse';
 import { LOGIN_ERROR, SUCCESS_MSG, USER_EXISTS } from '../../constants';
@@ -90,7 +90,6 @@ export class UserService {
     hashedPassword: string,
   ): Promise<boolean> {
     const isMatch = await bcrypt.compare(password, hashedPassword);
-    console.log(isMatch);
     return isMatch;
   }
 

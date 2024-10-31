@@ -1,6 +1,8 @@
 import { AccountModel } from '../account.model';
 import type { Knex } from 'knex';
-import { Account } from '../account.interface';
+import { Account } from '../../../interfaces/account.interface';
+import { UserAccount } from '../../../interfaces/user-account.interface';
+import { Transaction } from '../../../interfaces/transaction.interface';
 
 jest.mock('knex');
 
@@ -13,6 +15,13 @@ describe('AccountModel', () => {
     first,
     update,
   }));
+  const innerJoin = jest.fn(() => ({
+    where,
+  }));
+  const select = jest.fn(() => ({
+    innerJoin,
+  }));
+  const insert = jest.fn();
 
   // Mock account data for testing
   const mockAccount: Account = {
@@ -23,10 +32,21 @@ describe('AccountModel', () => {
     updated_at: new Date(),
   };
 
+  // Mock user account data for testing
+  const mockUserAndAccount: Partial<UserAccount> = {
+    id: 1,
+    user_id: 1,
+    balance: 100.0,
+    address: 'address',
+    name: 'john doe',
+  };
+
   beforeEach(() => {
-    // Create a mock implementation of the Knex instance
+    // Created a mock implementation of the Knex instance
     mockKnex = jest.fn(() => ({
       where,
+      select,
+      insert,
     }));
 
     accountModel = new AccountModel(mockKnex as unknown as Knex);
@@ -41,10 +61,11 @@ describe('AccountModel', () => {
       const id = 1;
       where().first.mockResolvedValueOnce(mockAccount);
 
-      const account = await accountModel.findAccountById(id);
+      const account: Account | undefined =
+        await accountModel.findAccountById(id);
 
       expect(mockKnex).toHaveBeenCalledWith('accounts');
-      expect(where).toHaveBeenCalledWith({ id });
+      expect(where).toHaveBeenCalledWith({ user_id: id });
       expect(account).toEqual(mockAccount);
     });
 
@@ -52,9 +73,10 @@ describe('AccountModel', () => {
       const id = 999;
       where().first.mockResolvedValueOnce(undefined);
 
-      const account = await accountModel.findAccountById(id);
+      const account: Account | undefined =
+        await accountModel.findAccountById(id);
 
-      expect(mockKnex().where).toHaveBeenCalledWith({ id });
+      expect(where).toHaveBeenCalledWith({ user_id: id });
       expect(where).toHaveBeenCalled();
       expect(where().first).toHaveBeenCalled();
       expect(account).toBeUndefined();
@@ -63,46 +85,137 @@ describe('AccountModel', () => {
 
   describe('update', () => {
     it('should update an account and return the count of updated rows', async () => {
-      // Arrange
       const id = 1;
       const accountUpdates = { balance: 200.0 };
-      where().update.mockResolvedValueOnce(1); // Simulate successful update
+      where().update.mockResolvedValueOnce(1);
 
-      // Act
-      const updatedCount = await accountModel.update(id, accountUpdates);
+      const updatedCount: number = await accountModel.updateAccount(
+        id,
+        accountUpdates,
+      );
 
-      // Assert
       expect(mockKnex().where).toHaveBeenCalledWith({ id });
-      expect(where().update).toHaveBeenCalledWith(accountUpdates);
+      expect(where().update).toHaveBeenCalledWith({
+        balance: accountUpdates.balance,
+      });
       expect(updatedCount).toBe(1);
     });
 
     it('should throw an error if no account is found to update', async () => {
-      // Arrange
-      const id = 999; // Non-existent ID
+      const id = 999;
       const accountUpdates = { balance: 200.0 };
-      where().update.mockResolvedValueOnce(0); // Simulate no rows updated
+      where().update.mockResolvedValueOnce(0);
 
-      // Act & Assert
-      await expect(accountModel.update(id, accountUpdates)).rejects.toThrow(
-        'No account found with the provided id',
-      );
+      await expect(
+        accountModel.updateAccount(id, accountUpdates),
+      ).rejects.toThrow('No account found with the provided id');
       expect(where).toHaveBeenCalledWith({ id });
       expect(where().update).toHaveBeenCalledWith(accountUpdates);
     });
 
     it('should handle database errors during update', async () => {
-      // Arrange
       const id = 1;
       const accountUpdates = { balance: 200.0 };
       where().update.mockRejectedValue(new Error('Database error'));
 
-      // Act & Assert
-      await expect(accountModel.update(id, accountUpdates)).rejects.toThrow(
-        'Database error',
-      );
+      await expect(
+        accountModel.updateAccount(id, accountUpdates),
+      ).rejects.toThrow('Database error');
       expect(where).toHaveBeenCalledWith({ id });
       expect(where().update).toHaveBeenCalledWith(accountUpdates);
+    });
+  });
+
+  describe('findAccountByEmail', () => {
+    it('should return an account by email', async () => {
+      const email = 'test@email.com';
+
+      select().innerJoin().where().first.mockResolvedValueOnce(mockAccount);
+
+      const account = await accountModel.findAccountByEmail(email);
+
+      expect(mockKnex).toHaveBeenCalledWith('accounts');
+      expect(where).toHaveBeenCalledWith('users.email', email);
+      expect(select).toHaveBeenCalled();
+      expect(where().first).toHaveBeenCalled();
+      expect(account).toEqual(mockAccount);
+    });
+
+    it('should return undefined if no account found', async () => {
+      const email = 'john.doe@email.com';
+      select().innerJoin().where().first.mockResolvedValueOnce(undefined);
+
+      const account = await accountModel.findAccountByEmail(email);
+
+      expect(where).toHaveBeenCalledWith('users.email', email);
+      expect(where).toHaveBeenCalled();
+      expect(where().first).toHaveBeenCalled();
+      expect(select).toHaveBeenCalled();
+      expect(account).toBeUndefined();
+    });
+  });
+
+  describe('findUserAndAccountById', () => {
+    it('should user info and account info by id', async () => {
+      const id = 1;
+
+      select()
+        .innerJoin()
+        .where()
+        .first.mockResolvedValueOnce(mockUserAndAccount);
+
+      const account = await accountModel.findUserAndAccountById(id);
+
+      expect(mockKnex).toHaveBeenCalledWith('accounts');
+      expect(where).toHaveBeenCalledWith('users.id', id);
+      expect(select).toHaveBeenCalled();
+      expect(where().first).toHaveBeenCalled();
+      expect(account).toEqual(mockUserAndAccount);
+    });
+
+    it('should return undefined if no account found', async () => {
+      const id = 999;
+      select().innerJoin().where().first.mockResolvedValueOnce(undefined);
+
+      const account: UserAccount | undefined =
+        await accountModel.findUserAndAccountById(id);
+
+      expect(where).toHaveBeenCalledWith('users.id', id);
+      expect(where).toHaveBeenCalled();
+      expect(where().first).toHaveBeenCalled();
+      expect(select).toHaveBeenCalled();
+      expect(account).toBeUndefined();
+    });
+  });
+
+  describe('createTransaction', () => {
+    // Mock transaction data for testing
+    const mockTransaction: Omit<Transaction, 'id'> = {
+      user_id: 1,
+      transaction_type: 'fund',
+      amount: 50.0,
+      reference: 'TXN123',
+      created_at: new Date(),
+      updated_at: new Date(),
+    };
+    it('should insert a transaction into the transactions table', async () => {
+      insert.mockResolvedValueOnce([1]); // Mock insert response with an array of inserted IDs
+
+      await accountModel.createTransaction(mockTransaction);
+
+      expect(mockKnex).toHaveBeenCalledWith('transactions');
+      expect(insert).toHaveBeenCalledWith(mockTransaction);
+    });
+
+    it('should handle database errors during insertion', async () => {
+      const errorMessage = 'Database error';
+      insert.mockRejectedValueOnce(new Error(errorMessage));
+
+      await expect(
+        accountModel.createTransaction(mockTransaction),
+      ).rejects.toThrow(errorMessage);
+
+      expect(insert).toHaveBeenCalledWith(mockTransaction);
     });
   });
 });

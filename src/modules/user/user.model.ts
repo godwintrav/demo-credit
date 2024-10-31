@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
-import { User } from './user.interface';
-import { Account } from '../account/account.interface';
+import { User } from '../../interfaces/user.interface';
+import { Account } from '../../interfaces/account.interface';
 
 //class for database interaction with user database
 export class UserModel {
@@ -11,7 +11,6 @@ export class UserModel {
     try {
       return await this.db.transaction(async (trx) => {
         const response = await trx<User>('users').insert(user);
-        console.log(response);
         const [newUserId] = response;
 
         // Insert account for the new user

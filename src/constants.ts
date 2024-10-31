@@ -12,6 +12,11 @@ export const LGA_REQUIRED = 'LGA ID is required';
 export const USER_EXISTS = 'User with email address already exists';
 export const LOGIN_ERROR = 'Invalid email or password';
 export const URL_NOT_FOUND = 'URL NOT FOUND';
+export const ACCOUNT_NOT_FOUND = 'Account not found';
+export const INVALID_USER = 'Invalid user id';
+export const INVALID_AMOUNT = 'Invalid Amount';
+export const INSUFFICIENT_FUNDS = 'Insufficient Funds';
+export const RECEIVER_ACCOUNT_NOT_FOUND = 'Receiver account not found';
 
 //success messages
 export const SUCCESS_MSG = 'success';

@@ -23,13 +23,16 @@ export async function up(knex: Knex): Promise<void> {
         .inTable('users')
         .onDelete('CASCADE'); // Deletes all user's transactions if user is deleted
       table
-        .enum('transaction_type', ['fund', 'withdraw', 'transfer'], {
-          useNative: true,
-          enumName: 'transaction_type_enum',
-        })
+        .enum(
+          'transaction_type',
+          ['fund', 'withdraw', 'transferIn', 'transferOut'],
+          {
+            useNative: true,
+            enumName: 'transaction_type_enum',
+          },
+        )
         .notNullable();
       table.decimal('amount', 10, 2).notNullable();
-      table.string('reference').nullable();
       table.timestamps(true, true); // created_at, updated_at
     })
     .createTable('accounts', (table) => {

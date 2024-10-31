@@ -1,6 +1,6 @@
 import { UserModel } from '../user.model';
 import type { Knex } from 'knex';
-import { User } from '../user.interface';
+import { User } from '../../../interfaces/user.interface';
 
 describe('UserModel', () => {
   let userModel: UserModel;

@@ -10,7 +10,7 @@ import {
   SUCCESS_MSG,
   USER_EXISTS,
 } from '../../../constants';
-import { User } from '../user.interface';
+import { User } from '../../../interfaces/user.interface';
 
 describe('UserController', () => {
   let userController: UserController;

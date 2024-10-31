@@ -9,7 +9,7 @@ import {
   INVALID_PASSWORD,
   LGA_REQUIRED,
 } from '../../constants';
-import { CreateUserApiResponse } from '../../types/api-response';
+import { CreateUserApiResponse } from '../../interfaces/api-response.interface';
 import { errorResponse } from '../../utils/errorResponse';
 
 export function validateRegistration(body: any): CreateUserApiResponse | null {

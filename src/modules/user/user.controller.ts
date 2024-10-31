@@ -1,10 +1,10 @@
 import { BODY_REQUIRED, LOGIN_ERROR } from '../../constants';
-import { CreateUserApiResponse } from '../../types/api-response';
+import { CreateUserApiResponse } from '../../interfaces/api-response.interface';
 import { UserService } from './user.service';
 import { Request, Response } from 'express';
 import { validateRegistration } from './user.validation';
 
-//route handlers for user routes
+//controller handlers for user routes
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -28,8 +28,6 @@ export class UserController {
           .json({ message: validationResponse.message });
         return;
       }
-
-      console.log('here');
 
       //call create user from user service
       const apiResponse = await this.userService.createUser(body);
@@ -71,13 +69,11 @@ export class UserController {
         return;
       }
 
-      res
-        .status(apiResponse.statusCode)
-        .json({
-          user: apiResponse.user,
-          message: apiResponse.message,
-          token: apiResponse.token,
-        });
+      res.status(apiResponse.statusCode).json({
+        user: apiResponse.user,
+        message: apiResponse.message,
+        token: apiResponse.token,
+      });
       return;
     } catch (e: unknown) {
       const err: Error = e as Error;
