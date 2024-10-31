@@ -2,8 +2,6 @@ import { UserModel } from '../user.model';
 import type { Knex } from 'knex';
 import { User } from '../user.interface';
 
-jest.mock('knex');
-
 describe('UserModel', () => {
   let userModel: UserModel;
   const mockUser = {
@@ -15,21 +13,18 @@ describe('UserModel', () => {
     lga_id: '12',
     password: '123456',
   } as unknown as Omit<User, 'id'>;
-  const select = jest.fn().mockReturnThis();
-  const from = jest.fn().mockReturnThis();
-  const where = jest.fn().mockReturnThis();
+
   const insert = jest.fn();
-  const returning = jest.fn().mockReturnThis();
   const first = jest.fn();
+  const where = jest.fn().mockReturnThis();
+  const transaction = jest.fn();
+
   let mockKnex: jest.Mock;
 
   beforeEach(() => {
     mockKnex = jest.fn(() => ({
-      select,
-      from,
-      where,
       insert,
-      returning,
+      where,
       first,
     }));
 
@@ -41,22 +36,29 @@ describe('UserModel', () => {
   });
 
   describe('insert', () => {
-    it('should insert a new user and return the user id', async () => {
-      insert.mockResolvedValueOnce([1]);
+    let insertKnexMock: unknown;
+    beforeEach(() => {
+      // Mock the knex instance to include the transaction method
+      insertKnexMock = {
+        transaction,
+      };
 
+      userModel = new UserModel(insertKnexMock as unknown as Knex);
+    });
+
+    it('should insert a new user and return the user id', async () => {
+      transaction.mockResolvedValueOnce(1);
       const newUserId = await userModel.insert(mockUser);
 
-      expect(mockKnex().insert).toHaveBeenCalledWith(mockUser);
       expect(newUserId).toBe(1);
     });
 
-    it('should handle database errors during insert', async () => {
-      insert.mockRejectedValue(new Error('Database insert error'));
+    it('should handle database errors during user insert', async () => {
+      transaction.mockRejectedValueOnce(new Error('Database insert error'));
 
       await expect(userModel.insert(mockUser)).rejects.toThrow(
-        'Database insert error',
+        'Transaction failed: Database insert error',
       );
-      expect(insert).toHaveBeenCalledWith(mockUser);
     });
   });
 
