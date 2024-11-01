@@ -7,27 +7,28 @@ import {
 import { AccountService } from './account.service';
 import { Request, Response } from 'express';
 import { AccountApiResponse } from '../../interfaces/api-response.interface';
+import { AuthRequest } from '../../interfaces/auth-request.interface';
 
 //controller handlers for account routes
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  async fundAccount(req: Request, res: Response): Promise<void> {
+  async fundAccount(req: AuthRequest, res: Response): Promise<void> {
     try {
-      let { amount, userId } = req.body;
+      let { amount } = req.body;
+      const userId = req.userId;
 
       if (!amount || Number.isNaN(parseFloat(amount)) || amount <= 0) {
         res.status(400).json({ message: INVALID_AMOUNT });
         return;
       }
 
-      if (!userId || Number.isNaN(parseInt(userId))) {
+      if (!userId || Number.isNaN(userId)) {
         res.status(400).json({ message: INVALID_USER });
         return;
       }
 
       amount = parseFloat(amount);
-      userId = parseInt(userId);
 
       const serviceResponse: AccountApiResponse =
         await this.accountService.fundUserAccountService(userId, amount);
@@ -45,22 +46,22 @@ export class AccountController {
     }
   }
 
-  async withdrawAmount(req: Request, res: Response): Promise<void> {
+  async withdrawAmount(req: AuthRequest, res: Response): Promise<void> {
     try {
-      let { amount, userId } = req.body;
+      let { amount } = req.body;
+      const userId = req.userId;
 
       if (!amount || Number.isNaN(parseFloat(amount)) || amount <= 0) {
         res.status(400).json({ message: INVALID_AMOUNT });
         return;
       }
 
-      if (!userId || Number.isNaN(parseInt(userId))) {
+      if (!userId || Number.isNaN(userId)) {
         res.status(400).json({ message: INVALID_USER });
         return;
       }
 
       amount = parseFloat(amount);
-      userId = parseInt(userId);
 
       const serviceResponse: AccountApiResponse =
         await this.accountService.withdrawAmountService(userId, amount);
@@ -78,16 +79,17 @@ export class AccountController {
     }
   }
 
-  async transferAmount(req: Request, res: Response): Promise<void> {
+  async transferAmount(req: AuthRequest, res: Response): Promise<void> {
     try {
-      let { amount, senderId, receiverEmail } = req.body;
+      let { amount, receiverEmail } = req.body;
+      const senderId = req.userId;
 
       if (!amount || Number.isNaN(parseFloat(amount)) || amount <= 0) {
         res.status(400).json({ message: INVALID_AMOUNT });
         return;
       }
 
-      if (!senderId || Number.isNaN(parseInt(senderId))) {
+      if (!senderId || Number.isNaN(senderId)) {
         res.status(400).json({ message: INVALID_USER });
         return;
       }
@@ -98,7 +100,6 @@ export class AccountController {
       }
 
       amount = parseFloat(amount);
-      senderId = parseInt(senderId);
       receiverEmail = validator.escape(receiverEmail);
 
       const serviceResponse: AccountApiResponse =

@@ -1,10 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-
-interface AuthRequest extends Request {
-  userId?: number;
-  email?: string;
-}
+import { AuthRequest } from '../interfaces/auth-request.interface';
 
 export const authMiddleware = (
   req: AuthRequest,
@@ -22,7 +18,7 @@ export const authMiddleware = (
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
     const { userId, email } = decoded as JwtPayload;
     req.userId = userId;
-    req.email = email;
+    req.userEmail = email;
     next(); // Pass control to the next middleware
   } catch (err) {
     //log for debugging

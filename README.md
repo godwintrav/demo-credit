@@ -83,9 +83,45 @@ As you can see above the `Users` table has a one to many relationship with the `
     }
     ```
 
+### User Login
+
+- **Endpoint**: `POST /api/auth/login`
+- **Request Body**:
+    ```json
+    {
+    "email": "godwintrav@gmail.com",
+    "password": "123456"
+    }
+    ```
+- **Response**:
+    - **Success**: `statusCode: 200`
+    ```json
+    {
+    "user": {
+        "id": 1,
+        "email": "godwintrav@gmail.com",
+        "name": "Godwin Odenigbo",
+        "date_of_birth": "2001-01-12T00:00:00.000Z",
+        "lga_id": 12,
+        "city": "Enugu",
+        "address": "11 Animat Street",
+        "created_at": "2024-10-31T16:24:06.000Z",
+        "updated_at": "2024-10-31T16:24:06.000Z"
+    },
+    "message": "success",
+    "token": "token"
+    }
+    ```
+    - **Error**: `statusCode: 401`
+    ```json
+    {
+    "message": "Invalid email or password"
+    }
+    ```
+
 ### Fund User Account
 
-- **Endpoint**: `POST /api/accounts/fund`
+- **Endpoint**: `POST /api/account/fund`
 - **Headers**: `Authorization: Bearer <token>`
 - **Request Body**:
     ```json
@@ -95,23 +131,85 @@ As you can see above the `Users` table has a one to many relationship with the `
     }
     ```
 - **Response**:
-    - **Success**: `{ "message": "Funds added successfully", "statusCode": 200, "account": { "balance": 300 } }`
-    - **Error**: `{ "message": "Account not found", "statusCode": 404 }`
+    - **Success**: `statusCode: 200`
+    ```json
+    {
+    "message": "success",
+    "account": {
+        "id": 1,
+        "user_id": 1,
+        "balance": 5000,
+        "created_at": "2024-10-31T16:24:06.000Z",
+        "updated_at": "2024-10-31T16:24:06.000Z"
+    }
+    }
+    ```
+    - **Error**: `statusCode: 401`
+    ```json
+    {
+    "message": "Invalid token."
+    }
+    ```
+
+    - **Error**: `statusCode: 404`
+    ```json
+    {
+    "message": "Account not found"
+    }
+    ```
+
+    - **Error**: `statusCode: 400`
+    ```json
+    {
+    "message": "Invalid Amount"
+    }
+    ```
 
 ### Withdraw Amount
 
-- **Endpoint**: `POST /api/accounts/withdraw`
+- **Endpoint**: `POST /api/account/fund`
 - **Headers**: `Authorization: Bearer <token>`
 - **Request Body**:
     ```json
     {
       "userId": 1,
-      "amount": 50
+      "amount": 100
     }
     ```
 - **Response**:
-    - **Success**: `{ "message": "Withdrawal successful", "statusCode": 200, "account": { "balance": 250 } }`
-    - **Error**: `{ "message": "Insufficient funds", "statusCode": 402 }`
+    - **Success**: `statusCode: 200`
+    ```json
+    {
+    "message": "success",
+    "account": {
+        "id": 1,
+        "user_id": 1,
+        "balance": 5000,
+        "created_at": "2024-10-31T16:24:06.000Z",
+        "updated_at": "2024-10-31T16:24:06.000Z"
+    }
+    }
+    ```
+    - **Error**: `statusCode: 401`
+    ```json
+    {
+    "message": "Invalid token."
+    }
+    ```
+
+    - **Error**: `statusCode: 404`
+    ```json
+    {
+    "message": "Account not found"
+    }
+    ```
+    
+    - **Error**: `statusCode: 400`
+    ```json
+    {
+    "message": "Invalid Amount"
+    }
+    ```
 
 ### Transfer Amount
 

@@ -4,12 +4,14 @@ import { Request, Response } from 'express';
 import { jest } from '@jest/globals';
 import { INVALID_AMOUNT, INVALID_USER } from '../../../utils/constants';
 import { AccountApiResponse } from '../../../interfaces/api-response.interface';
+import { AuthRequest } from '../../../interfaces/auth-request.interface';
 
 describe('AccountController', () => {
   let accountController: AccountController;
   let mockAccountService: jest.Mocked<AccountService>;
-  let req: Partial<Request>;
+  let req: Partial<AuthRequest>;
   let res: Partial<Response>;
+  const userId = 1;
 
   beforeEach(() => {
     mockAccountService = {
@@ -21,7 +23,7 @@ describe('AccountController', () => {
 
     accountController = new AccountController(mockAccountService);
 
-    req = { body: {}, params: {} };
+    req = { body: {}, params: {}, userId };
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
@@ -34,7 +36,7 @@ describe('AccountController', () => {
 
   describe('fundAccount', () => {
     it('should respond with 400 if amount or userId is invalid', async () => {
-      req.body = { amount: -10, userId: 'abc' };
+      req.body = { amount: -10 };
 
       await accountController.fundAccount(req as Request, res as Response);
 
@@ -43,7 +45,7 @@ describe('AccountController', () => {
     });
 
     it('should call fundUserAccountService and return 200 on success', async () => {
-      req.body = { amount: 100, userId: 1 };
+      req.body = { amount: 100 };
       const serviceResponse = {
         statusCode: 200,
         account: {},
@@ -56,7 +58,7 @@ describe('AccountController', () => {
       await accountController.fundAccount(req as Request, res as Response);
 
       expect(mockAccountService.fundUserAccountService).toHaveBeenCalledWith(
-        1,
+        userId,
         100,
       );
       expect(res.status).toHaveBeenCalledWith(statusCode);
@@ -64,7 +66,7 @@ describe('AccountController', () => {
     });
 
     it('should return 500 on unexpected error', async () => {
-      req.body = { amount: 100, userId: 1 };
+      req.body = { amount: 100 };
       mockAccountService.fundUserAccountService.mockRejectedValue(
         new Error('Internal Error'),
       );
@@ -78,7 +80,7 @@ describe('AccountController', () => {
 
   describe('withdrawAmount', () => {
     it('should respond with 400 if amount or userId is invalid', async () => {
-      req.body = { amount: 'abc', userId: -5 };
+      req.body = { amount: 'abc' };
 
       await accountController.withdrawAmount(req as Request, res as Response);
 
@@ -87,7 +89,7 @@ describe('AccountController', () => {
     });
 
     it('should call withdrawAmountService and return 200 on success', async () => {
-      req.body = { amount: 50, userId: 1 };
+      req.body = { amount: 50 };
       const serviceResponse = {
         statusCode: 200,
         account: {},
@@ -101,7 +103,7 @@ describe('AccountController', () => {
       await accountController.withdrawAmount(req as Request, res as Response);
 
       expect(mockAccountService.withdrawAmountService).toHaveBeenCalledWith(
-        1,
+        userId,
         50,
       );
       expect(res.status).toHaveBeenCalledWith(statusCode);
@@ -109,7 +111,7 @@ describe('AccountController', () => {
     });
 
     it('should return 500 on unexpected error', async () => {
-      req.body = { amount: 50, userId: 1 };
+      req.body = { amount: 50 };
       mockAccountService.withdrawAmountService.mockRejectedValue(
         new Error('Internal Error'),
       );
@@ -123,7 +125,7 @@ describe('AccountController', () => {
 
   describe('transferAmount', () => {
     it('should respond with 400 if amount, senderId, or receiverEmail is invalid', async () => {
-      req.body = { amount: 'abc', senderId: 1, receiverEmail: 'invalid-email' };
+      req.body = { amount: 'abc', receiverEmail: 'invalid-email' };
 
       await accountController.transferAmount(req as Request, res as Response);
 
@@ -134,7 +136,6 @@ describe('AccountController', () => {
     it('should call transferAmountService and return 200 on success', async () => {
       req.body = {
         amount: 100,
-        senderId: 1,
         receiverEmail: 'receiver@example.com',
       };
       const serviceResponse = {
