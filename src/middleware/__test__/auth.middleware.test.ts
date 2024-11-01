@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import app from '../../app';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: '.env' });
 
 describe('authMiddleware', () => {
   let validToken: string;
