@@ -16,13 +16,16 @@ import {
   CreateUserApiResponse,
   LoginUserApiResponse,
 } from '../../../interfaces/api-response.interface';
-import axios from 'axios';
+import fetch from 'node-fetch';
 
 jest.mock('../user.model');
 jest.mock('bcrypt');
 jest.mock('jsonwebtoken');
 jest.mock('../../../utils/errorResponse');
 jest.mock('knex');
+jest.mock('node-fetch');
+
+const { Response } = jest.requireActual('node-fetch');
 
 describe('UserService', () => {
   let userService: UserService;
@@ -36,7 +39,6 @@ describe('UserService', () => {
     lga_id: '12',
     password: '123456',
   } as unknown as Partial<User> as User;
-  let axiosSpy: jest.SpyInstance;
 
   beforeEach(() => {
     mockUserModel = new UserModel(
@@ -46,15 +48,10 @@ describe('UserService', () => {
   });
 
   describe('createUser', () => {
-    beforeEach(() => {
-      axiosSpy = jest.spyOn(axios, 'get').mockResolvedValue({
-        status: 404,
-      } as unknown as Axios.AxiosXHR<unknown>);
-    });
     it('should return an error if user has been blacklisted', async () => {
-      axiosSpy.mockResolvedValueOnce({
-        status: 200,
-      } as unknown as Axios.AxiosXHR<unknown>);
+      jest
+        .spyOn(fetch, 'default')
+        .mockResolvedValueOnce(new Response(null, { status: 200 }));
       const response = await userService.createUser({
         email: 'existing@example.com',
         password: 'password123',
@@ -66,9 +63,12 @@ describe('UserService', () => {
       });
 
       expect(response).toEqual(errorResponse(BLACKLISTED_ERROR_MSG));
-      expect(axiosSpy).toHaveBeenCalled();
+      expect(fetch).toHaveBeenCalled();
     });
     it('should return an error if user already exists', async () => {
+      jest
+        .spyOn(fetch, 'default')
+        .mockResolvedValueOnce(new Response(null, { status: 404 }));
       mockUserModel.findUserByEmail.mockResolvedValue({
         email: 'existing@example.com',
       } as User);
@@ -87,10 +87,13 @@ describe('UserService', () => {
       expect(mockUserModel.findUserByEmail).toHaveBeenCalledWith(
         'existing@example.com',
       );
-      expect(axiosSpy).toHaveBeenCalled();
+      expect(fetch).toHaveBeenCalled();
     });
 
     it('should create a new user and return user data on success', async () => {
+      jest
+        .spyOn(fetch, 'default')
+        .mockResolvedValueOnce(new Response(null, { status: 404 }));
       const newUserId = 1;
       mockUserModel.findUserByEmail.mockResolvedValueOnce(undefined); // No existing user
       mockUserModel.insert.mockResolvedValueOnce(newUserId);
@@ -104,7 +107,7 @@ describe('UserService', () => {
       expect(response.user?.email).toBe(newMockUser.email);
       expect(response.message).toBe(SUCCESS_MSG);
       expect(mockUserModel.insert).toHaveBeenCalled();
-      expect(axiosSpy).toHaveBeenCalled();
+      expect(fetch).toHaveBeenCalled();
     });
   });
 

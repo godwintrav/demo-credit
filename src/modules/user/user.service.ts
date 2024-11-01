@@ -15,7 +15,7 @@ import {
   USER_EXISTS,
 } from '../../utils/constants';
 import jwt from 'jsonwebtoken';
-import axios from 'axios';
+import fetch from 'node-fetch';
 
 //This class handles business logic for users
 export class UserService {
@@ -118,20 +118,27 @@ export class UserService {
 
   //function to check karma api if user is in blacklist
   async checkKarmaBlacklist(email: string): Promise<boolean> {
+    const URL = `https://adjutor.lendsqr.com/v2/verification/karma/${email}`;
+
     try {
-      const URL = `https://adjutor.lendsqr.com/v2/verification/karma/${email}`;
-      const response = await axios.get(URL, {
+      const response = await fetch(URL, {
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${process.env.KARMA_API_KEY}`,
         },
       });
+
+      // Check if the response status is 404
       if (response.status == 404) {
         return false;
-      } else {
-        return true;
+      } else if (!response.ok) {
+        // Handle other HTTP errors
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      return true;
     } catch (error: unknown) {
-      //throw error with more descriptive error message and log for debugging
+      // Log the error for debugging
       console.log(error);
       throw new Error(`Error fetching Karma Blacklist data`);
     }
