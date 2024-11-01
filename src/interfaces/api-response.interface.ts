@@ -22,5 +22,5 @@ export interface AccountApiResponse extends ApiResponse {
 }
 
 export interface TransactionsApiResponse extends ApiResponse {
-  transactions: Transaction[];
+  transactions?: Transaction[];
 }

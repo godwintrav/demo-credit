@@ -19,6 +19,7 @@ export const INSUFFICIENT_FUNDS = 'Insufficient Funds';
 export const RECEIVER_ACCOUNT_NOT_FOUND = 'Receiver account not found';
 export const BLACKLISTED_ERROR_MSG = 'User has been blacklisted';
 export const TRANSFER_SAME_ACCOUNT_ERROR = "Can't transfer to same account";
+export const USER_NOT_FOUND = 'User not found';
 
 //success messages
 export const SUCCESS_MSG = 'success';

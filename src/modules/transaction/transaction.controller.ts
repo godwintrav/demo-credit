@@ -21,9 +21,14 @@ export class TransactionController {
       const response: TransactionsApiResponse =
         await this.transactionService.getAllUserTransactions(validatedUserId);
 
+      if (response.statusCode !== 200) {
+        res.status(response.statusCode).json({ message: response.message });
+        return;
+      }
+
       res.status(response.statusCode).json({
-        transactions: response.transactions,
         message: response.message,
+        transactions: response.transactions,
       });
       return;
     } catch (e: unknown) {
