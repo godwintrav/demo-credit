@@ -16,7 +16,7 @@ describe('authMiddleware', () => {
     });
   });
 
-  it.only('should allow access if a valid token is provided', async () => {
+  it('should allow access if a valid token is provided', async () => {
     const response = await request(app)
       .get('/account/health/test')
       .set('Authorization', `Bearer ${validToken}`);

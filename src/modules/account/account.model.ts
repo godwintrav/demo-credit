@@ -90,7 +90,8 @@ export class AccountModel {
     } catch (e: unknown) {
       // If we get here, that means that both updates will not have taken place beacuse we used transaction.
       const err: Error = e as Error;
-      //console.error(err);
+      //log for debugging
+      console.log(err);
       throw new Error('Transaction failed: ' + err.message);
     }
   }

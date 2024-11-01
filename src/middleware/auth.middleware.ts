@@ -19,14 +19,14 @@ export const authMiddleware = (
   }
 
   try {
-    // Replace 'mysecretkey' with `process.env.JWT_SECRET` for production
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
     const { userId, email } = decoded as JwtPayload;
     req.userId = userId;
     req.email = email;
     next(); // Pass control to the next middleware
   } catch (err) {
-    console.error(err);
+    //log for debugging
+    console.log(err);
     res.status(401).json({ message: 'Invalid token.' });
     return;
   }
