@@ -6,6 +6,7 @@ The Demo Credit Wallet Application is a secure platform that allows users to cre
 
 Core Documentation breakdown can be read here: https://brawny-lamb-149.notion.site/GODWIN-ODENIGBO-LENDSQR-TASK-BREAKDOWN-1311c8cd721f805abe4fd7d5455ac6da?pvs=4
 
+
 ## Features
 
 - **User Registration**: Users can create an account by providing necessary information.
@@ -107,6 +108,8 @@ As you can see above the `Users` table has a one to many relationship with the `
 - **Testing Framework**: Jest
 
 ## API Endpoints
+
+POSTMAN API DOCUMENTATION: https://documenter.getpostman.com/view/14071780/2sAY4x9gDu
 
 ### User Registration
 
