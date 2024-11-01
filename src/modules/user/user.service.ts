@@ -138,8 +138,9 @@ export class UserService {
 
       return true;
     } catch (error: unknown) {
+      const err: Error = error as Error;
       // Log the error for debugging
-      console.log(error);
+      console.log(err.message);
       throw new Error(`Error fetching Karma Blacklist data`);
     }
   }

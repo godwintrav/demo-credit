@@ -34,7 +34,7 @@ export class TransactionController {
     } catch (e: unknown) {
       const err: Error = e as Error;
       //log for debugging
-      console.log(err);
+      //console.log(err);
       res.status(500).json({ message: err.message });
       return;
     }

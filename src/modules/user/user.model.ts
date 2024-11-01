@@ -24,7 +24,7 @@ export class UserModel {
       // nor 'account' inserts will have taken place beacuse we used transaction and it rolls back any changes made.
       const err: Error = e as Error;
       //log for debugging
-      console.log(err);
+      //console.log(err);
       throw new Error('Transaction failed: ' + err.message);
     }
   }

@@ -20,9 +20,10 @@ export const authMiddleware = (
     req.userId = userId;
     req.userEmail = email;
     next(); // Pass control to the next middleware
-  } catch (err) {
+  } catch (err: unknown) {
+    const error: Error = err as Error;
     //log for debugging
-    console.log(err);
+    console.log(error.message);
     res.status(401).json({ message: 'Invalid token.' });
     return;
   }

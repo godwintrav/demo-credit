@@ -92,7 +92,7 @@ export class AccountModel {
       // If we get here, that means that both updates will not have taken place beacuse we used transaction and any changes will be rolled back.
       const err: Error = e as Error;
       //log for debugging
-      console.log(err);
+      //console.log(err);
       throw new Error('Transaction failed: ' + err.message);
     }
   }
