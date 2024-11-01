@@ -18,7 +18,7 @@ describe('authMiddleware', () => {
 
   it('should allow access if a valid token is provided', async () => {
     const response = await request(app)
-      .get('/account/health/test')
+      .get('/api/account/health/test')
       .set('Authorization', `Bearer ${validToken}`);
 
     expect(response.status).toBe(200);
@@ -28,7 +28,7 @@ describe('authMiddleware', () => {
   });
 
   it('should deny access if no token is provided', async () => {
-    const response = await request(app).get('/account/test');
+    const response = await request(app).get('/api/account/test');
 
     expect(response.status).toBe(401);
     expect(response.body.message).toBe('Access denied. No token provided.');
@@ -36,7 +36,7 @@ describe('authMiddleware', () => {
 
   it('should deny access if an invalid token is provided', async () => {
     const response = await request(app)
-      .get('/account/test')
+      .get('/api/account/test')
       .set('Authorization', `Bearer ${invalidToken}`);
 
     expect(response.status).toBe(401);

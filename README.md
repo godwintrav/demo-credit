@@ -45,7 +45,7 @@ As you can see above the `Users` table has a one to many relationship with the `
 
 ### User Registration
 
-- **Endpoint**: `POST /auth/register`
+- **Endpoint**: `POST /api/auth/register`
 - **Request Body**:
     ```json
     {
@@ -59,19 +59,29 @@ As you can see above the `Users` table has a one to many relationship with the `
     }
     ```
 - **Response**:
-    - **Success**: 
+    - **Success**: `statusCode: 201`
     ```json
     {
-    "name": "user name",
-    "address": "address",
-    "email": "test@gmail.com",
-    "city": "Enugu",
-    "date_of_birth": "2001-01-12",
-    "lga_id": "12",
-    "password": "password"
+    "user": {
+        "id": 8,
+        "email": "test@gmail.com",
+        "name": "user name",
+        "date_of_birth": "2001-01-12T00:00:00.000Z",
+        "lga_id": 12,
+        "city": "Enugu",
+        "address": "11 Animat Street",
+        "created_at": "2024-11-01T07:09:53.000Z",
+        "updated_at": "2024-11-01T07:09:53.000Z"
+    },
+    "message": "success"
     }
     ```
-    - **Error**: `{ "message": "Email already in use", "statusCode": 409 }`
+    - **Error**: `statusCode: 400`
+    ```json
+    {
+    "message": "User with email address already exists"
+    }
+    ```
 
 ### Fund User Account
 

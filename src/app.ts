@@ -11,9 +11,9 @@ const app = express();
 app.use(express.json());
 
 //routes
-app.use('/auth', userRouter);
-app.use('/account', authMiddleware, accountRouter);
-app.use('/transactions', authMiddleware, transactionRouter);
+app.use('/api/auth', userRouter);
+app.use('/api/account', authMiddleware, accountRouter);
+app.use('/api/transactions', authMiddleware, transactionRouter);
 
 //unknown url middleware handler
 app.use((req: Request, res: Response) => {
