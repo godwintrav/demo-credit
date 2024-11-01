@@ -13,10 +13,10 @@ jobs:
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - name: Display environment
-        run: echo "MY_VARIABLE is ${{ secrets.JWT_SECRET }}"
+        run: echo "MY_VARIABLE is ${{ vars.JWT_SECRET }}"
       - name: Create .env file 
         run: |
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "JWT_SECRET=${{ vars.JWT_SECRET }}" >> .env
 
       - name: Install Packages to Runner
         run: |
