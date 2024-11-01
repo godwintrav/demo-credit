@@ -3,6 +3,7 @@ import {
   INSUFFICIENT_FUNDS,
   RECEIVER_ACCOUNT_NOT_FOUND,
   SUCCESS_MSG,
+  TRANSFER_SAME_ACCOUNT_ERROR,
 } from '../../utils/constants';
 import { Account } from '../../interfaces/account.interface';
 import { AccountApiResponse } from '../../interfaces/api-response.interface';
@@ -103,7 +104,7 @@ export class AccountService {
     }
 
     if (receiverAccount.id == senderAccount.id) {
-      return { message: "Can't transfer to same account", statusCode: 402 };
+      return { message: TRANSFER_SAME_ACCOUNT_ERROR, statusCode: 400 };
     }
 
     // update user and receiver account

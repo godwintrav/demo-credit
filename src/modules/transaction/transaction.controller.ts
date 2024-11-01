@@ -10,12 +10,13 @@ export class TransactionController {
   async fetchTransaction(req: Request, res: Response): Promise<void> {
     try {
       const { userId } = req.params;
-      const validatedUserId = parseInt(userId);
 
-      if (!validatedUserId || typeof validatedUserId != 'number') {
+      if (!userId || Number.isNaN(parseInt(userId))) {
         res.status(400).json({ message: INVALID_USER });
         return;
       }
+
+      const validatedUserId = parseInt(userId);
 
       const response: TransactionsApiResponse =
         await this.transactionService.getAllUserTransactions(validatedUserId);

@@ -5,6 +5,7 @@ import {
   INSUFFICIENT_FUNDS,
   RECEIVER_ACCOUNT_NOT_FOUND,
   SUCCESS_MSG,
+  TRANSFER_SAME_ACCOUNT_ERROR,
 } from '../../../utils/constants';
 import { Account } from '../../../interfaces/account.interface';
 import { UserAccount } from '../../../interfaces/user-account.interface';
@@ -111,6 +112,24 @@ describe('AccountService', () => {
         );
 
       expect(response).toEqual({ message: ACCOUNT_NOT_FOUND, statusCode: 404 });
+    });
+
+    it('should return an error if sender sends to his own account', async () => {
+      const account: Account = { id: 1, user_id: 1, balance: 200 };
+      mockAccountModel.findAccountByUserId.mockResolvedValueOnce(account);
+      mockAccountModel.findAccountByEmail.mockResolvedValueOnce(account);
+
+      const response: AccountApiResponse =
+        await accountService.transferAmountService(
+          1,
+          100,
+          'receiver@example.com',
+        );
+
+      expect(response).toEqual({
+        message: TRANSFER_SAME_ACCOUNT_ERROR,
+        statusCode: 400,
+      });
     });
 
     it('should return an error if sender has insufficient funds', async () => {

@@ -15,18 +15,19 @@ export class AccountController {
   async fundAccount(req: Request, res: Response): Promise<void> {
     try {
       let { amount, userId } = req.body;
-      amount = parseFloat(amount);
-      userId = parseInt(userId);
 
-      if (!amount || typeof amount != 'number' || amount <= 0) {
+      if (!amount || Number.isNaN(parseFloat(amount)) || amount <= 0) {
         res.status(400).json({ message: INVALID_AMOUNT });
         return;
       }
 
-      if (!userId || typeof userId != 'number') {
+      if (!userId || Number.isNaN(parseInt(userId))) {
         res.status(400).json({ message: INVALID_USER });
         return;
       }
+
+      amount = parseFloat(amount);
+      userId = parseInt(userId);
 
       const serviceResponse: AccountApiResponse =
         await this.accountService.fundUserAccountService(userId, amount);
@@ -47,18 +48,19 @@ export class AccountController {
   async withdrawAmount(req: Request, res: Response): Promise<void> {
     try {
       let { amount, userId } = req.body;
-      amount = parseFloat(amount);
-      userId = parseInt(userId);
 
-      if (!amount || typeof amount != 'number' || amount <= 0) {
+      if (!amount || Number.isNaN(parseFloat(amount)) || amount <= 0) {
         res.status(400).json({ message: INVALID_AMOUNT });
         return;
       }
 
-      if (!userId || typeof userId != 'number') {
+      if (!userId || Number.isNaN(parseInt(userId))) {
         res.status(400).json({ message: INVALID_USER });
         return;
       }
+
+      amount = parseFloat(amount);
+      userId = parseInt(userId);
 
       const serviceResponse: AccountApiResponse =
         await this.accountService.withdrawAmountService(userId, amount);
@@ -79,15 +81,13 @@ export class AccountController {
   async transferAmount(req: Request, res: Response): Promise<void> {
     try {
       let { amount, senderId, receiverEmail } = req.body;
-      amount = parseFloat(amount);
-      senderId = parseInt(senderId);
-      receiverEmail = validator.escape(receiverEmail);
-      if (!amount || typeof amount != 'number' || amount <= 0) {
+
+      if (!amount || Number.isNaN(parseFloat(amount)) || amount <= 0) {
         res.status(400).json({ message: INVALID_AMOUNT });
         return;
       }
 
-      if (!senderId || typeof senderId != 'number') {
+      if (!senderId || Number.isNaN(parseInt(senderId))) {
         res.status(400).json({ message: INVALID_USER });
         return;
       }
@@ -96,6 +96,10 @@ export class AccountController {
         res.status(400).json({ message: RECEIVER_ACCOUNT_NOT_FOUND });
         return;
       }
+
+      amount = parseFloat(amount);
+      senderId = parseInt(senderId);
+      receiverEmail = validator.escape(receiverEmail);
 
       const serviceResponse: AccountApiResponse =
         await this.accountService.transferAmountService(
@@ -120,11 +124,13 @@ export class AccountController {
   async getAccount(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const userId = parseInt(id);
-      if (!userId || typeof userId != 'number') {
+
+      if (!id || Number.isNaN(parseInt(id))) {
         res.status(400).json({ message: INVALID_USER });
         return;
       }
+
+      const userId = parseInt(id);
 
       const serviceResponse: AccountApiResponse =
         await this.accountService.getUserAccount(userId);
