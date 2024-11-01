@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import db from '../../config/db';
-import { TransactionModel } from './transaction.model';
-import { TransactionService } from './transaction.service';
-import { TransactionController } from './transaction.controller';
+import db from '../config/db';
+import { TransactionModel } from '../modules/transaction/transaction.model';
+import { TransactionService } from '../modules/transaction/transaction.service';
+import { TransactionController } from '../modules/transaction/transaction.controller';
 
 const transactionRouter = Router();
 

@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { AccountModel } from './account.model';
-import { AccountService } from './account.service';
-import { AccountController } from './account.controller';
-import db from '../../config/db';
+import { AccountModel } from '../modules/account/account.model';
+import { AccountService } from '../modules/account/account.service';
+import { AccountController } from '../modules/account/account.controller';
+import db from '../config/db';
 
 const accountRouter = Router();
 

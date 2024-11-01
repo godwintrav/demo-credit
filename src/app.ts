@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
-import userRouter from './modules/user/user.route';
-import accountRouter from './modules/account/account.route';
-import transactionRouter from './modules/transaction/transaction.route';
+import userRouter from './routes/user.route';
+import accountRouter from './routes/account.route';
+import transactionRouter from './routes/transaction.route';
 import authMiddleware from './middleware/auth.middleware';
 import { URL_NOT_FOUND } from './utils/constants';
 

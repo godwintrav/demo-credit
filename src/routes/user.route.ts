@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
-import db from '../../config/db';
-import { UserModel } from './user.model';
+import { UserController } from '../modules/user/user.controller';
+import { UserService } from '../modules/user/user.service';
+import db from '../config/db';
+import { UserModel } from '../modules/user/user.model';
 
 const userRouter = Router();
 
