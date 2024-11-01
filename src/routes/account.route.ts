@@ -7,7 +7,7 @@ import db from '../config/db';
 const accountRouter = Router();
 
 //dependency injection
-const accountModel: AccountModel = new AccountModel(db);
+const accountModel: AccountModel = new AccountModel(db!);
 const userService: AccountService = new AccountService(accountModel);
 const accountController: AccountController = new AccountController(userService);
 

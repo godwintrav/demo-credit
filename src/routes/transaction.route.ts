@@ -8,8 +8,8 @@ import { UserModel } from '../modules/user/user.model';
 const transactionRouter = Router();
 
 //dependency injection
-const transactionModel: TransactionModel = new TransactionModel(db);
-const userModel: UserModel = new UserModel(db);
+const transactionModel: TransactionModel = new TransactionModel(db!);
+const userModel: UserModel = new UserModel(db!);
 const transactionService: TransactionService = new TransactionService(
   transactionModel,
   userModel,

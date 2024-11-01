@@ -1,9 +1,14 @@
-import knex from 'knex';
+import knex, { Knex } from 'knex';
 import knexConfig from './knexfile';
 import dotenv from 'dotenv';
 dotenv.config();
 
 const environment = process.env.NODE_ENV || 'development';
-const db = knex(knexConfig[environment]);
+let db: Knex | null = null;
+
+//singleton pattern
+if (!db) {
+  db = knex(knexConfig[environment]);
+}
 
 export default db;

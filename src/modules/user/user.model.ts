@@ -9,6 +9,7 @@ export class UserModel {
   //create a new user and new account
   async insert(user: Omit<User, 'id'>): Promise<number> {
     try {
+      //use transaction scoping to ensure consistency even when unexpected error occurs
       return await this.db.transaction(async (trx) => {
         const response = await trx<User>('users').insert(user);
         const [newUserId] = response;
@@ -20,7 +21,7 @@ export class UserModel {
       });
     } catch (e: unknown) {
       // If we get here, that means that neither the 'user' insert,
-      // nor 'account' inserts will have taken place beacuse we used transaction.
+      // nor 'account' inserts will have taken place beacuse we used transaction and it rolls back any changes made.
       const err: Error = e as Error;
       //log for debugging
       console.log(err);

@@ -7,7 +7,7 @@ import { UserModel } from '../modules/user/user.model';
 const userRouter = Router();
 
 //dependency injection
-const userModel: UserModel = new UserModel(db);
+const userModel: UserModel = new UserModel(db!);
 const userService: UserService = new UserService(userModel);
 const userController: UserController = new UserController(userService);
 

@@ -4,6 +4,8 @@
 
 The Demo Credit Wallet Application is a secure platform that allows users to create accounts, fund their accounts, withdraw funds, and transfer money between users. This application is built using Node.js, Express, and TypeScript, with a MySql database for persistent and consistent storage.
 
+Core Documentation breakdown can be read here: https://brawny-lamb-149.notion.site/GODWIN-ODENIGBO-LENDSQR-TASK-BREAKDOWN-1311c8cd721f805abe4fd7d5455ac6da?pvs=4
+
 ## Features
 
 - **User Registration**: Users can create an account by providing necessary information.
@@ -286,7 +288,8 @@ As you can see above the `Users` table has a one to many relationship with the `
 - **Request Body**:
     ```json
     {
-      "amount": 100
+      "amount": 1000.00,
+      "receiverEmail": "godwintrav12@gmail.com"
     }
     ```
 - **Response**:
