@@ -20,6 +20,8 @@ jobs:
         run: |
           npx lint-staged
       - name: Run Tests
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
           npm test
       - run: echo "🍏 This job's status is ${{ job.status }}."
